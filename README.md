@@ -1,52 +1,56 @@
-# app-add_flat_chan
+# Add Flat Channel to MNE Raw Data
 
 [![Abcdspec-compliant](https://img.shields.io/badge/ABCD_Spec-v1.1-green.svg)](https://github.com/brain-life/abcd-spec)
+[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.856-blue.svg)](https://doi.org/10.25663/brainlife.app.856)
 
 ## Description
 
-Adds artificial flat (zero-valued) channels to MNE raw data files. This app is useful for:
-- Adding stimulus or trigger channels that were not originally recorded in the data
+Adds an artificial flat (zero-valued) channel to an MNE raw `.fif` file, using `mne.create_info()` to build the new channel and `raw.add_channels()` to merge it into the recording. This is useful for:
+- Adding a stimulus/trigger channel that was not originally recorded
 - Standardizing channel layouts across datasets by adding placeholder channels
 - Preparing data for analyses that require specific channel configurations
 
+The app generates:
+- An updated raw `.fif` file with the new flat channel added
+- An HTML QC report with a raw data summary and the updated channel list
+- A `product.json` summary for the Brainlife.io interface
+
 ## Inputs
 
-- **raw**: MNE raw data file in `.fif` format
+- **`raw`** (`neuro/meeg/mne/raw`): continuous MNE raw data to which the flat channel will be added (required)
 
 ## Outputs
 
-- **out_dir/raw.fif**: Modified raw data file with the new flat channel added
-- **out_report/report.html**: QC report containing raw data summary and updated channel information
-- **product.json**: Metadata with channel information and data summary
+- **out_dir/raw.fif** (`neuro/meeg/mne/raw`): raw data with the new flat channel added
+- **out_report/report.html**: QC report containing a raw data summary and the updated channel list
+- **product.json**: metadata summarizing the added channel and raw info
 
 ## Configuration Parameters
 
-### Required
-
-- `raw`: Path to the input MNE raw data file (`.fif` format)
-- `ch_name`: Name for the new flat channel (e.g., "STI 014")
-- `ch_type`: Type of the new channel. Common types include:
-  - `stim`: For stimulus/trigger channels
-  - `misc`: For miscellaneous channels
-  - `eeg`: For EEG channel
-  - `meg`: For MEG channel
+| key | type | default | description |
+|---|---|---|---|
+| `ch_name` | string | required | Name for the new flat channel (e.g. `"STI 014"`). |
+| `ch_type` | string | required | Type of the new channel, passed to `mne.create_info()` (e.g. `stim`, `misc`, `eeg`, `meg`). |
 
 ## Usage
 
-The app reads a raw MNE data file, adds a flat channel with the specified name and type, and outputs the modified file.
+### Running on Brainlife.io
 
-Example configuration:
-```json
-{
-    "raw": "path/to/raw.fif",
-    "ch_name": "STI 014",
-    "ch_type": "stim"
-}
+1. Go to the [Add flat channel app page](https://brainlife.io/app/856) on Brainlife.io.
+2. Select your project and the raw `.fif` file as input.
+3. Set `ch_name` and `ch_type` for the channel to add.
+4. Submit the process, then download `out_dir/raw.fif` and `out_report/report.html` once it completes.
+
+### Local Testing
+
+```bash
+# Edit config.json with your own input file and channel name/type, then run:
+python3 main.py
 ```
 
 ## Technical Details
 
-- **Execution**: Python with MNE-Python and shared brainlife_utils library
+- **Execution**: Python with MNE-Python and the shared `brainlife_utils` library
 - **Data format**: MNE `.fif` format (compatible with all downstream Brainlife.io apps)
 - **Channel addition**: Uses `mne.create_info()` and `raw.add_channels()` for consistent channel handling
 - **Report generation**: Automatic HTML report with channel visualization
@@ -60,9 +64,9 @@ Example configuration:
 
 We kindly ask that you cite the following articles when publishing papers and code using this app:
 
-**brainlife.io: A decentralized and open source cloud platform to support neuroscience research**. Hayashi, S., Caron, B. A., et al. & Pestilli, F. (2023). ArXiv. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10274934/
+Hayashi, S., Caron, B.A., Heinsfeld, A.S. et al. brainlife.io: a decentralized and open-source cloud platform to support neuroscience research. Nat Methods 21, 809–813 (2024). https://doi.org/10.1038/s41592-024-02237-2
 
-**MEG and EEG data analysis with MNE-Python**. Gramfort A, et al. & Hämäläinen MS. (2013). Frontiers in Neuroscience, 7(267):1–13. https://doi.org/10.3389/fnins.2013.00267
+Gramfort, A. et al. MEG and EEG data analysis with MNE-Python. Front. Neurosci. 7, 267 (2013). https://doi.org/10.3389/fnins.2013.00267
 
 ## Funding Acknowledgement
 
@@ -72,12 +76,9 @@ brainlife.io is publicly funded and for the sustainability of the project we kin
 [![NSF-BCS-1636893](https://img.shields.io/badge/NSF_BCS-1636893-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1636893)
 [![NSF-ACI-1916518](https://img.shields.io/badge/NSF_ACI-1916518-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1916518)
 [![NSF-IIS-1912270](https://img.shields.io/badge/NSF_IIS-1912270-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1912270)
+[![NIH-NIBIB-R01EB029272](https://img.shields.io/badge/NIH_NIBIB-R01EB029272-green.svg)](https://grantome.com/grant/NIH/R01-EB029272-01)
 [![NIH-NIBIB-R01EB030896](https://img.shields.io/badge/NIH_NIBIB-R01EB030896-green.svg)](https://grantome.com/grant/NIH/R01-EB030896-01)
 
-Copyright (c) 2026 MEEG Brainlife team
+## License
 
-This project is licensed under the AGPL-3.0 License - see [license.txt](license.txt) for details.
-
-## Citation
-
-Hayashi, S., Caron, B.A., Heinsfeld, A.S. et al. brainlife.io: a decentralized and open-source cloud platform to support neuroscience research. Nat Methods 21, 809–813 (2024). https://doi.org/10.1038/s41592-024-02237-2
+Copyright (c) 2026 MEEG Brainlife team. Licensed under AGPL-3.0, see [license.txt](license.txt).
