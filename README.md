@@ -1,5 +1,43 @@
 # Add Flat Channel to MNE Raw Data
 
+<!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
+
+> **Add a flat channel to a mne/raw file. This helps add a missing channel before concatenation.**
+
+Creates a zero-valued channel with the given name and type at the recording's sampling rate, appends it to the raw MEG/EEG data with raw.add_channels, and saves the result with an HTML report listing the channels. Use it to add a missing stimulus or placeholder channel so that recordings can be concatenated or share the same channel layout. The new channel contains no signal.
+
+| | |
+|---|---|
+| 📥 **Inputs** | `neuro/meeg/mne/raw` |
+| 📤 **Outputs** | `neuro/meeg/mne/raw` |
+| 🐳 **Container** | `brainlifemeeg/mne:1.12.1` |
+| ⚙️ **Resources** | 1 CPUs · 10 GB memory · 2 h walltime |
+| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.856](https://doi.org/10.25663/brainlife.app.856) |
+
+#### 📥 Inputs
+
+| Input | Datatype | Required | Description |
+|---|---|---|---|
+| `raw0` | `neuro/meeg/mne/raw` | yes | Continuous MEG/EEG recording in MNE raw .fif format. |
+
+#### 📤 Outputs
+
+| Output | Datatype | Description |
+|---|---|---|
+| `out_dir` | `neuro/meeg/mne/raw` | Raw data (raw.fif) with the added flat channel. |
+
+<details>
+<summary><b>⚙️ Parameters</b> (2)</summary>
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `ch_name` | string |  | Name of the channel to add. |
+| `ch_type` | string |  | Type of the channel to add. |
+
+</details>
+
+<!-- brainlife-app:end -->
+
 [![Abcdspec-compliant](https://img.shields.io/badge/ABCD_Spec-v1.1-green.svg)](https://github.com/brain-life/abcd-spec)
 [![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.856-blue.svg)](https://doi.org/10.25663/brainlife.app.856)
 
